@@ -1,34 +1,53 @@
 #include "client.h"
 #include "requirements.h"
 
-void start_tcp_client(char *server_address, int port) {
+void start_tcp_client(char *server_address, int port, void *config) {
     int sock;
     struct sockaddr_in server_addr;
-    char *message = "Hello, Server!";
     
+    // Create TCP socket
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
     }
 
+    // Set up the server address
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(port);
     inet_pton(AF_INET, server_address, &server_addr.sin_addr);
 
+    // Connect to the server
     if (connect(sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
         perror("Connection failed");
         exit(EXIT_FAILURE);
     }
 
-    printf("Connected to server. Sending message...\n");
+    printf("Connected to server. Sending config...\n");
+
 
     Header header;
-    header.msg_type = htons(1);
-    header.msg_length = htons(strlen(message));
+    header.msg_type = htons(1);  // Example message type
+    header.msg_length = htons(sizeof(Config)); // Length of the config struct
     header.timestamp = htonl(time(NULL));
 
-    send(sock, &header, sizeof(Header), 0);
+    // Send header
+    if (send(sock, &header, sizeof(Header), 0) < 0) {
+        perror("Failed to send header");
+        close(sock);
+        exit(EXIT_FAILURE);
+    }
+
+    // Send config data
+    if (send(sock, config, sizeof(Config), 0) < 0) {
+        perror("Failed to send config");
+        close(sock);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Config sent to server successfully.\n");
+
+    char *message = "Hello, Server!";
     send(sock, message, strlen(message), 0);
 
     close(sock);

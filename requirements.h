@@ -1,3 +1,6 @@
+#ifndef REQUIREMENTS_H
+#define REQUIREMENTS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -8,6 +11,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include <math.h>
+#include <fcntl.h>
 #include <stdint.h>
 
 #define HEADER_SIZE 8  // Fixed header size
@@ -45,3 +49,5 @@ typedef struct {
     uint16_t msg_length; 
     uint32_t timestamp;  
 } Header;
+
+#endif
