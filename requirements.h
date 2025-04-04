@@ -8,10 +8,12 @@
 #include <pthread.h>
 #include <errno.h>
 #include <math.h>
+#include <stdint.h>
 
 #define HEADER_SIZE 8  // Fixed header size
 #define MAX_CLIENTS 10 // Max concurrent clients
 #define PORT 8080
+#define PORT_UDP 8081 
 
 #define ETHERNET_HEADER_SIZE 14   // Ethernet header (without VLAN)
 #define IP_HEADER_SIZE 20         // IPv4 header (without options)

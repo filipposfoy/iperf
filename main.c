@@ -21,6 +21,7 @@ void print_config(Config *config) {
 int main(int argc, char *argv[]) {
     Config config = {0};
     int opt;
+    int client_s; 
 
     while ((opt = getopt(argc, argv, "sca:p:i:f:l:b:n:t:dw:")) != -1) {
         switch (opt) {
@@ -74,13 +75,19 @@ int main(int argc, char *argv[]) {
     print_config(&config);
 
     if (config.is_server) {
-        start_tcp_server(config.port ? config.port : PORT);
+        client_s = start_tcp_server(config.port ? config.port : PORT);
+        uint64_t bytes_to_be_recvd = calculate_total_payload_bytes(config.udp_packet_size ? config.udp_packet_size : 1024,config.bandwidth ? config.bandwidth : 1000000, config.duration ? config.duration : 10 );
+        printf("Waited bytes : %ld\n\n\n", bytes_to_be_recvd);
+        udp_receiver(config.port ? config.port : PORT_UDP, config.udp_packet_size ? config.udp_packet_size : 1024, config.duration ? config.duration : 10);
     } else if (config.is_client) {
         if (!config.address) {
             fprintf(stderr, "Error: Client mode requires server address (-a).\n");
             exit(EXIT_FAILURE);
         }
         start_tcp_client(config.address, config.port ? config.port : PORT);
+        usleep(10000);
+        udp_sender(config.address,config.port ? config.port : PORT_UDP, config.udp_packet_size ? config.udp_packet_size : 1024, config.bandwidth ? config.bandwidth : 1000000, 
+        config.duration ? config.duration : 10);
     }
 
     return 0;

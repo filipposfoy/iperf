@@ -131,7 +131,6 @@ while (1) {
 }
 
 // Small sleep to prevent busy waiting
-    usleep(100);
 }
 
 // Final statistics
