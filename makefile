@@ -14,4 +14,4 @@ client.o: client.c
 	$(CC) $(CFLAGS) -c client.c -lm
 
 clean:
-	rm -f *.o iperf
+	rm -f *.o iperf output.json

@@ -3,6 +3,17 @@
 
 #include <stdint.h>
 #include "requirements.h"
+#include <json-c/json.h>
+
+
+typedef struct {
+    double timestamp;
+    uint64_t total_payload;
+    uint64_t total_transmitted;
+    double goodput_mbps;
+    double throughput_mbps;
+    double avg_jitter_us;
+} PerSecondStats;
 
 void start_tcp_server(int port, Config *received_config);
 
