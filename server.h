@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include "requirements.h"
-#include <json-c/json.h>
 
 
 typedef struct {
