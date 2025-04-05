@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "requirements.h"
 
-void* start_tcp_server(int port);
+void start_tcp_server(int port, Config *received_config);
 
 void *handle_client(void *arg);
 

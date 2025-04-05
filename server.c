@@ -2,11 +2,13 @@
 #include "requirements.h"
 
 
-void* start_tcp_server(int port) {
+void start_tcp_server(int port, Config *received_config) {
     int server_fd, client_sock;
     struct sockaddr_in address;
     socklen_t addr_len = sizeof(address);
-    Config received_config;
+    
+
+    received_config = malloc(sizeof(Config));
     
     // Create TCP socket
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -58,7 +60,7 @@ void* start_tcp_server(int port) {
     int config_length = ntohs(header.msg_length);
     if (config_length > 0) {
         // Receive the Config struct
-        if (recv(client_sock, &received_config, config_length, 0) <= 0) {
+        if (recv(client_sock, received_config, config_length, 0) <= 0) {
             perror("Failed to receive config");
             close(client_sock);
             close(server_fd);
@@ -66,16 +68,31 @@ void* start_tcp_server(int port) {
         }
 
         printf("Received config from client:\n");
-        printf("Server: %d, Client: %d\n", received_config.is_server, received_config.is_client);
-        printf("Address: %p, Port: %d\n", received_config.address, received_config.port);
-        printf("UDP Packet Size: %d, Bandwidth: %d\n", received_config.udp_packet_size, received_config.bandwidth);
+        if (received_config != NULL) {
+            printf("hhhh\n");
+            printf("Server: %d, Client: %d\n", received_config->is_server, received_config->is_client);
+        
+            // Safely print address
+            if (received_config->address != NULL) {
+                printf("Address: %p\n", (void*)received_config->address);
+            } else {
+                printf("Address: NULL\n");
+            }
+        
+            printf("Port: %d\n", received_config->port);
+            printf("UDP Packet Size: %d, Bandwidth: %d\n",
+                   received_config->udp_packet_size,
+                   received_config->bandwidth);
+        } else {
+            printf("Error: received_config is NULL\n");
+        }
     }
 
     // Close the client socket after processing
     close(client_sock);
     close(server_fd);
 
-    return &received_config;
+
 }
 
 void *handle_client(void *arg) {
