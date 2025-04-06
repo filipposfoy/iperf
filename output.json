@@ -1,0 +1,13 @@
+[
+  {"timestamp": 0, "total_payload": 119808, "total_transmitted": 124722, "goodput_mbps": 0.958, "throughput_mbps": 0.998, "avg_jitter_us": 71.741},
+  {"timestamp": 1, "total_payload": 239616, "total_transmitted": 249444, "goodput_mbps": 0.958, "throughput_mbps": 0.998, "avg_jitter_us": 64.112},
+  {"timestamp": 2, "total_payload": 359424, "total_transmitted": 374166, "goodput_mbps": 0.958, "throughput_mbps": 0.998, "avg_jitter_us": 59.951},
+  {"timestamp": 3, "total_payload": 480256, "total_transmitted": 499954, "goodput_mbps": 0.961, "throughput_mbps": 1.000, "avg_jitter_us": 60.374},
+  {"timestamp": 4, "total_payload": 600064, "total_transmitted": 624676, "goodput_mbps": 0.960, "throughput_mbps": 0.999, "avg_jitter_us": 63.227},
+  {"timestamp": 5, "total_payload": 719872, "total_transmitted": 749398, "goodput_mbps": 0.960, "throughput_mbps": 0.999, "avg_jitter_us": 62.387},
+  {"timestamp": 6, "total_payload": 839680, "total_transmitted": 874120, "goodput_mbps": 0.960, "throughput_mbps": 0.999, "avg_jitter_us": 60.502},
+  {"timestamp": 7, "total_payload": 960512, "total_transmitted": 999908, "goodput_mbps": 0.961, "throughput_mbps": 1.000, "avg_jitter_us": 59.613},
+  {"timestamp": 8, "total_payload": 1080320, "total_transmitted": 1124630, "goodput_mbps": 0.960, "throughput_mbps": 1.000, "avg_jitter_us": 58.492},
+  {"timestamp": 9, "total_payload": 1200128, "total_transmitted": 1249352, "goodput_mbps": 0.960, "throughput_mbps": 0.999, "avg_jitter_us": 58.110},
+  {"timestamp": 10, "total_payload": 1318912, "total_transmitted": 1373008, "goodput_mbps": 0.959, "throughput_mbps": 0.999, "avg_jitter_us": 57.580}
+]

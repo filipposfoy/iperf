@@ -1,7 +1,7 @@
 #include "client.h"
 #include "server.h"
 #include "requirements.h"
-// Print config
+
 void print_config(Config *config) {
     printf("Mode: %s\n", config->is_server ? "Server" : (config->is_client ? "Client" : "Unknown"));
     if (config->address) printf("Address: %s\n", config->address);
@@ -77,13 +77,17 @@ int main(int argc, char *argv[]) {
 
     if (config.is_server) {
         Config *recvd_conf;
-        start_tcp_server(config.port ? config.port : PORT, recvd_conf);
-       // print_config(recvd_conf);
-        printf("Time desired :: %d\n", config.duration);
-        uint64_t bytes_to_be_recvd = calculate_total_payload_bytes(config.udp_packet_size ? config.udp_packet_size : 1024,config.bandwidth ? config.bandwidth : 1000000, config.duration ? config.duration : 10 );
-        printf("Waited bytes : %ld\n\n\n", bytes_to_be_recvd);
-        udp_receiver(config.port ? config.port : PORT_UDP, config.udp_packet_size ? config.udp_packet_size : 1024, config.duration ? config.duration : 10);
-    } else if (config.is_client) {
+        recvd_conf = start_tcp_server(config.port ? config.port : PORT, recvd_conf);
+        printf("Packet size :: %d\n", recvd_conf->udp_packet_size);
+        printf("Na metrhsw to 1 way delay : %d\n\n\n", recvd_conf->measure_delay);
+        // print_config(recvd_conf);
+        // printf("Bandwidth :: %d\n", config.bandwidth);
+        if(recvd_conf->measure_delay){
+            udp_server(config.port ? config.port : PORT_UDP);
+        }else{
+            udp_receiver(config.port ? config.port : PORT_UDP, recvd_conf->udp_packet_size ? recvd_conf->udp_packet_size : 1024, recvd_conf->duration ? recvd_conf->duration : 10);
+        }
+        }else if (config.is_client) {
         if (!config.address) {
             fprintf(stderr, "Error: Client mode requires server address (-a).\n");
             exit(EXIT_FAILURE);
@@ -93,9 +97,12 @@ int main(int argc, char *argv[]) {
             sleep(config.wait_time);
         }
         start_tcp_client(config.address, config.port ? config.port : PORT,&config);
-        
-        udp_sender(config.address,config.port ? config.port : PORT_UDP, config.udp_packet_size ? config.udp_packet_size : 1024, config.bandwidth ? config.bandwidth : 1000000, 
-        config.duration ? config.duration : 10);
+        if(config.measure_delay){
+            udp_client_duration(config.address, config.port ? config.port : PORT_UDP, config.duration ? config.duration : 10);
+        }else{        
+            udp_sender(config.address,config.port ? config.port : PORT_UDP, config.udp_packet_size ? config.udp_packet_size : 1024, config.bandwidth ? config.bandwidth : 1000000, 
+            config.duration ? config.duration : 10);
+        }
     }
 
     return 0;
